@@ -7,7 +7,7 @@ var responseMessages = '';
 let checkLogin = /^[a-z0-9]{4,8}$/;
 let checkPassword = /^[a-z0-9#$_]{6,10}$/;
 var messageLogin = 'Login should only consist of letters and numbers, be 4-8 characters long and not be empty!';
-var messagePassword = 'The password should only consist of letters, numbers and symbols #, $, _. 4-8 characters long and not be empty!';
+var messagePassword = 'The password should only consist of letters, numbers and symbols #, $, _. 6-10 characters long and not be empty!';
 answer =(login, password) =>{    
     return `<div>\
                 <h4>Please fill this form</h4>\
