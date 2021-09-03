@@ -4,8 +4,8 @@ const port = 7580;
 webserver.use(express.urlencoded({extended:true}));
 var response = '';
 var responseMessages = '';
-let checkLogin = /[a-z0-9]{4,8}$/;
-let checkPassword = /[a-z0-9#$_]{6,10}$/;
+let checkLogin = /[A-z0-9]{4,8}$/;
+let checkPassword = /[A-z0-9#$_]{6,10}$/;
 var messageLogin = 'Login should only consist of letters and numbers, be 4-8 characters long and not be empty!';
 var messagePassword = 'The password should only consist of letters, numbers and symbols #, $, _. 6-10 characters long and not be empty!';
 answer =(login, password) =>{    
