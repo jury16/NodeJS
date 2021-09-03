@@ -11,13 +11,13 @@ var messagePassword = 'The password should only consist of letters, numbers and 
 answer =(login, password) =>{    
     return `<div>\
                 <h4>Please fill this form</h4>\
-                <form action="http://178.172.195.18:7580/servise1" method="get">\
+                <form action="http://178.172.195.18:7580" method="get">\
                     <p><input name="login" value =${login}> <input type="password" name="password" value=${password}></p>\
                     <p><input type="submit"></p>\
                 </form>\
             </div>`;
 }
-webserver.get('/servise1', (req, res) => { 
+webserver.get('', (req, res) => { 
     var formAswer = answer(req.query.login, req.query.password);
 
     //console.log(req.query.login, req.query.password )
