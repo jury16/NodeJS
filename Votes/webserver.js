@@ -37,7 +37,7 @@ func = (stats = null) =>{
     
     let forme =  `
                 <h2>Systeme votes</h2>
-                <form id='form' action="http://178.172.195.18:7580/servise1" method="get">
+                <form id='form' action="/servise1" method="get">
                 </form>
                 <script>
                 var newStats = {}; //create hash questions:votes
