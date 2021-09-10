@@ -19,7 +19,6 @@ webserver.get('/servise1', (req, res) => {
     let answer = req.query.vote;
     
     let stats = null;       //statistics
-    if(answer){
         stats = JSON.parse(fs.readFileSync('statistics.json',"utf8"));        
         stats.forEach(element => {
             let key = Object.keys(element);
@@ -28,7 +27,7 @@ webserver.get('/servise1', (req, res) => {
             
         });
         fs.writeFileSync('statistics.json', JSON.stringify(stats));    
-    }
+
         res.send(func(stats));    
 }); 
 
