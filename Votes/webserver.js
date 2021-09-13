@@ -6,10 +6,8 @@ const path = require('path');
 const port = 7580;
 
 webserver.use(express.urlencoded({extended:true}));
-const questionsPath = path.join(__dirname, 'questions.txt');
-const statisticsPath = path.join(__dirname, 'statistics.json');
-var quiestions = JSON.stringify(fs.readFileSync('questions.txt',"utf8").split(', '));
- webserver.get('', (req, res) => { 
+
+webserver.get('', (req, res) => { 
     let par1 = escapeHTML(req.query.vote);
     res.send(func());
 }); 
