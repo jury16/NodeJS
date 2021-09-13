@@ -13,6 +13,10 @@ var quiestions = JSON.stringify(fs.readFileSync('questions.txt',"utf8").split(',
     let par1 = escapeHTML(req.query.vote);
     res.send(func());
 }); 
+webserver.get('/questions', (req, res) => { 
+    let par1 = escapeHTML(req.query.vote);
+    res.send(JSON.stringify(fs.readFileSync('questions.txt',"utf8").split(', ')));
+}); 
 webserver.get('/servise1', (req, res) => { 
     
     let rep = escapeHTML(req.query.req);
@@ -39,8 +43,11 @@ func = (stats = null) =>{
                 <h2>Systeme votes</h2>
                 <form id='form' action="/servise1" method="get">
                 </form>
+                <script src='http://fe.it-academy.by/JQ/jquery.js'></script>
                 <script>
-                var newStats = {}; //create hash questions:votes
+                //read quetions.txt with ajax
+                        
+		var newStats = {}; //create hash questions:votes
                 if (${stats}){
                     ${stats}.forEach((item, index) =>{
                         var a = Object.keys(item)[0];
@@ -48,12 +55,26 @@ func = (stats = null) =>{
                     })
                 }                
                 // create form
+		    var questions = null;
+                    $.ajax(('/questions'),
+                    { type:'GET', dataType:'text', success:dataLoaded, error:errorHandler }
+                     );
+                    function dataLoaded(data) {                                          
+                        questions = JSON.parse(data);
+                        
+                        createForm(questions);
+                        
+                    }
+                    function errorHandler(jqXHR,statusStr,errorStr) {
+                        alert(statusStr+' '+errorStr);
+                    }
+		    createForm = (questions) =>{
                     var form = document.getElementById('form');
                     form.style.border = 1 + 'px' + ' solid';
                     form.style.width = 200 + 'px';
                     form.style.backgroundColor = '#CDCDCD';
                     var textSpan;
-                   ${quiestions}.forEach((item, index)=>{   
+                    questions.forEach((item, index)=>{   
                        var p = document.createElement('p');  
                                              
                        //p.style.border = 3 + 'px' + ' solid';                      
@@ -76,9 +97,9 @@ func = (stats = null) =>{
                        form.appendChild(p);
                    })
                    var inputSubmit = document.createElement('input');   
-                   inputSubmit.type = "submit";
-                 
-                   form.appendChild(inputSubmit);                
+                   inputSubmit.type = "submit";                 
+                   form.appendChild(inputSubmit);  
+		}              
                 </script>
                 `;
                 return forme;
