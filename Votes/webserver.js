@@ -62,6 +62,7 @@ var variants = fs.readFileSync('variants.json',"utf8");
                     input.name = "vote";
                     input.value = voteCode; 
                     var label = document.createElement('label');
+                    label.htmlFor = voteCode;
                     var textLabel = document.createTextNode(voteName);
                     (Object.keys(newStats).length)?textSpan = document.createTextNode(newStats[voteName]):textSpan = document.createTextNode('');
                     label.appendChild(textLabel)
@@ -79,24 +80,19 @@ var variants = fs.readFileSync('variants.json',"utf8");
             $("form").on( "submit", function( event ) {
                 event.preventDefault();
                 $.ajax(('/votes'),
-                { type:'POST', dataType:'text', data: $( this ).serialize(), success:dataLoaded}
+                { type:'POST', dataType:'text', data: $( this ).serialize(), success:dataLoaded, error:errorHandler }
                 );
                     function dataLoaded(data) {                            
                         $.ajax(('/stats'),
-                        { type:'POST', dataType:'text', data: $( this ).serialize(), success:dataUploaded}
+                        { type:'POST', dataType:'text', data: $( this ).serialize(), success:dataLoaded, error:errorHandler }
                         );
-                        function dataUploaded(data) {                                          
-                            $.ajax(('/main'),
-                            { type:'GET', dataType:'text', success:dataLoaded(data), error:errorHandler }
-                            );
                             function dataLoaded(data) {  
                                 let spanText = document.getElementsByTagName('span');  
                                 let statsChanged = (JSON.parse(data)); 
                                 statsChanged.forEach((item, index)=>{ 
                                     spanText[index].innerHTML = item[Object.keys(item)[0]];
                                 });                                                                  
-                            }
-                        }                            
+                            }                          
                     }
                 function errorHandler(jqXHR,statusStr,errorStr) {
                     alert(statusStr+' '+errorStr);
@@ -108,8 +104,7 @@ var variants = fs.readFileSync('variants.json',"utf8");
     `   
  }
 webserver.get('/main', (req, res) => { 
-    let par1 = escapeHTML(req.query.vote); 
-    console.log('from main')     
+    let par1 = escapeHTML(req.query.vote);     
     res.send(main());
 }); 
 webserver.get('/variants', (req, res) => { 
@@ -120,11 +115,9 @@ webserver.post('/votes', (req, res) => {
     var idVote = (req.body)['vote'];
     let answer = null;
     JSON.parse(variants).map((item, index) =>{
-        //console.log(item['text'])
         item['code'] == idVote? answer = item['text']: item['code'];
     })
     if(answer){
-        console.log('answer:' , answer)
         stats.map(element => {
            Object.keys(element)[0] === answer?element[`${Object.keys(element)[0]}`] += 1:Object.keys(element)[0];
             
