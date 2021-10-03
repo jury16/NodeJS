@@ -8,9 +8,10 @@ $.ajax(('/variants'),
 { type:'GET', dataType:'json', success:dataLoaded, error:errorHandler }
 );
 function dataLoaded(data) {  
-    var questions = data;                                      
+    var questions = data;  
+    //console.log(questions);                                    
     $.ajax(('/stats'),
-    { type:'GET', dataType:'text', data: data, success:dataUploaded}
+    { type:'GET', dataType:'text',  success:dataUploaded}
     );
     function dataUploaded(data) {                                          
         var st = JSON.parse(data);
@@ -22,6 +23,7 @@ function dataLoaded(data) {
                 newStats[item[color]] = item[count];
             })
         }    
+        console.log(newStats);
         createForm(questions);                                                                                     
     }                            
                         
@@ -39,8 +41,7 @@ createForm = (questions) =>{
     questions.forEach((item, index)=>{   
         var voteName = item[Object.keys(item)[0]];
         var voteCode = item[Object.keys(item)[1]];
-        var p = document.createElement('p');                                             
-        //p.style.border = 3 + 'px' + ' solid';                      
+        var p = document.createElement('p');                                                                  
         var input = document.createElement('input');  
         var span = document.createElement('span');  
         span.style.float = 'right';  
@@ -52,7 +53,7 @@ createForm = (questions) =>{
         var label = document.createElement('label');
         label.htmlFor = voteCode;
         var textLabel = document.createTextNode(voteName);
-        (Object.keys(newStats).length)?textSpan = document.createTextNode(newStats[voteName]):textSpan = document.createTextNode('');
+        (Object.keys(newStats).length)?textSpan = document.createTextNode(newStats[voteCode]):textSpan = document.createTextNode('');
         label.appendChild(textLabel)
         span.appendChild(textSpan);
         p.appendChild(input); 
@@ -78,6 +79,7 @@ createForm = (questions) =>{
                 );
             
                     function dataUploaded(data) {  
+                        console.log(data);
                         let spanText = document.getElementsByTagName('span');  
                         let statsChanged = (JSON.parse(data)); 
                         

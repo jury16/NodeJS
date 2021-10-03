@@ -35,14 +35,9 @@ webserver.get('/variants', (req, res) => {
 }); 
 webserver.post('/votes', (req, res) => {    
     var idVote = (req.body)['vote'];
-    let answer = null;
-    JSON.parse(variants).map((item, index) =>{
-        //console.log(item['text'])
-        item['code'] == idVote? answer = item['text']: item['code'];
-    })
-    if(answer){
+    if(idVote){
         stats.map(element => {
-           (element)['color'] === answer?(element)['count'] += 1:(element)['count'];
+           (element)['code'] == idVote?(element)['count'] += 1:(element)['count'];
         });    
           
         fs.writeFileSync('statistics.json', JSON.stringify(stats));   
