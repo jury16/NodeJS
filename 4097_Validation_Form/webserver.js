@@ -22,20 +22,19 @@ webserver.get('', (req, res) => {
     res.send(answer('', ''));
 });
 webserver.get('/answer', (req, res) => {
+    res.send (`<div>\
+                    <p>Your login is: ${req.query.login} </p> \n \
+                    <p>Your password is: ${req.query.password}</p>\
+                </div>
+                <a href="/" style='text-decoration:none; color:red'>Main page</a>`);
     
-    res.send(response);
 });
 webserver.post('/check', (req, res) => { 
     var formAswer = answer(req.body.login, req.body.password);
-    console.log(req.body.login, req.body.password )
     if((req.body.login && checkLogin.exec(req.body.login)) && (req.body.password && checkPassword.exec(req.body.password))){
-        response = `<div>\
-                    <p>Your login is: ${req.body.login} </p> \n \
-                    <p>Your password is: ${req.body.password}</p>\
-                </div>
-                <a href="/" style='text-decoration:none; color:red'>Main page</a>`
+        
 
-        return res.redirect('/answer');
+        return res.redirect(`/answer?login=${req.body.login}&password=${req.body.password}`);
     }
     else if(req.body.login === undefined || req.body.password === undefined){
         var login = '';
@@ -54,7 +53,7 @@ webserver.post('/check', (req, res) => {
     res.send(response);
     
 }); 
-//console.log(password)
 webserver.listen(port,()=>{ 
     console.log("web server running on port " + port);
 }); 
+
