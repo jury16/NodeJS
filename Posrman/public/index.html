@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NOT_Postman</title>
+    <meta charset="utf-8" />
+</head>
+<body> 
+    <form id='form'>
+        <label for="url">URL</label><br>
+        <input type="text" name="url" size="48"><br>
+        <label for="get">GET</label>
+        <input type="radio" id="get" name="method" value="get" checked>
+        <label for="post">POST</label>
+        <input type="radio" id="post" name="method" value="post"><br>  
+        <div id='params' name='params'>
+            <label>Params</label>
+                <div>                
+                    <input class='params' name='paramsKey' type='text' size='50'>
+                    <input class='params' name='paramsValue' type='text' size='50'>                    
+                </div>                
+        </div>  
+        <input type="button" name='paramsButton' id="paramsButton" value="+"><br>           
+        <div id='headers' name='headers'>     
+            <label >Headers</label><br>           
+            <input class='headers' name='headersKey' type='text' size='50'>
+            <input class='headers' name='headersValue' type='text' size='50'>                    
+        </div>  
+            <input type="button" name='headersButton' id="headersButton" value="+"><br>   
+        <!--<textarea id="headers" name="headers" rows="4" cols="50"></textarea><br>-->
+        <div id='body' name='body'>
+            <label>Body</label>
+                <div>                
+                    <input class='body' name='bodyKey' type='text' size='50'>
+                    <input class='body' name='bodyValue' type='text' size='50'>                    
+                </div>                
+        </div>  
+        <input type="button" name='bodyButton' id="bodyButton" value="+"><br>
+        <input id="submit" type="submit" value="Send Request">
+    </form>
+    <div id='storeData'>
+        <p id='pUrl'></p>
+        <p id='pMethod'></p>
+        <p id='pParams'></p>
+        <p id='pHeaders'></p>
+        <p id='pBody'></p>
+    </div>
+
+    <script src='http://fe.it-academy.by/JQ/jquery.js'></script>  
+    <script src="index.js"></script>
+</body>
+<html>
