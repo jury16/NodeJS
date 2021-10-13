@@ -24,16 +24,41 @@ answer = () =>{
     res.send();
 }); 
 webserver.post('/request', (req, res) => { 
-    let url = req.body.url;
+    let status, headerContent, headersArr;
+    res.setHeader("Access-Control-Allow-Origin","*");
+    res.setHeader("Access-Control-Allow-Headers","Content-Type");
+    let urL = req.body.url;
     let method = req.body.method;
     let params = req.body.params;
-    let headers = req.body.headers;
+    let headerS = req.body.headers;
     let body = req.body.body; 
-    console.log('url:', url)    
-    console.log('method:', method)  
-    console.log('params:', params)    
-    console.log('headers:', headers)    
-    console.log('body:', body)    
+        if (method === 'GET' || method === "POST"){
+
+        fetch(urL, {
+            method: method,
+            if  (params){
+                params: params},
+            if  (headerS){
+                headers: headerS},
+            if  (body){
+                body: body},
+
+        })
+        .then(response => {
+            status = response.status;
+            headerContent = response.headers.get('content-type');
+            headersArr = response.headers
+            /*
+            console.log('Status: ', response.status)
+            console.log('Headers: ', (response.headers.get['Headers']))
+            console.log('Content-type: ', response.headers.get('content-type'))
+            */
+            return response.json();
+        })
+        .then(data => console.log(data))
+        .catch(error => console.log('Error: ', error))
+        console.log('headerContent: ', this.headerContent);
+        }
     res.send(); 
 }); 
 webserver.options('/request', (req, res) => { 

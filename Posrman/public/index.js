@@ -5,9 +5,11 @@ let divBody = document.getElementById('body');
 let divHeaders = document.getElementById('headers');
 let pUrl = document.getElementById('pUrl');
 let pMethod = document.getElementById('pMethod');
-
-
-
+let pParams = document.getElementById('pParams');
+let pHeaders = document.getElementById('pHeaders');
+let pBody = document.getElementById('pBody');
+let spanErr = document.getElementById('urlError');
+let headersBody = document.getElementById('headersBody');
 $("form").on( "submit", function( event ) {
     event.preventDefault();
     let paramsReq = {};
@@ -22,33 +24,48 @@ $("form").on( "submit", function( event ) {
     let getReq = event.target.get.checked;
     getReq?methodReq = 'GET': methodReq = 'POST';
     hashReq = {'url': urlReq, 'method':methodReq, 'params':paramsReq, 'headers':headersReq, 'body': bodyReq};
-    
     getData (headersReq, inputsHeaders);
     getData (paramsReq, inputsParams);
-    getData (bodyReq, inputsBody);
+
+    if (divBody.className === 'body _active'){
+        getData (bodyReq, inputsBody);
+    }
+    else {
+        bodyReq = inputsBody[0].value;
+    }
+
     function getData(nameField, nameReq) {
         for(let i = 0; i < nameReq.length / 2; i++){
             nameField[nameReq[2*i].value] = nameReq[2*i+1].value;
         }
     }
-    $.ajax(('/request'),{ 
-                type:'POST', 
-                dataType:"json", 
-                data: (hashReq),
-                success: dataLoaded(), 
-                //error:errorHandler
-            });
-            function dataLoaded(){
-                let divData = document.getElementById('storeData');
-                pUrl.innerHTML = `URL:  ${urlReq}`;
-                pMethod.innerHTML = `Method: ${methodReq} \n`;
-               // divData.innerHTML = 'success!' ;
-            }   
-            
-        
-        function errorHandler(jqXHR,statusStr,errorStr) {
-            alert(statusStr+' '+errorStr);
-        }
+    if(urlReq){
+        $.ajax(('/request'),{ 
+            type:'POST', 
+            dataType:"json", 
+            data: (hashReq),
+            success: dataLoaded(), 
+            //error:errorHandler
+        });
+        function dataLoaded(){
+            let divData = document.getElementById('storeData');
+            pUrl.innerHTML = `URL:  ${urlReq}`;
+            spanErr.innerHTML = ``;
+            pMethod.innerHTML = `Method: ${methodReq}`;
+            //console.log(this)
+            /*
+            !paramsReq?pParams.innerHTML = `Params: null`:pParams.innerHTML = `Params: ${paramsReq}`;
+            !headersReq?pHeaders.innerHTML = `Headers: null`:pHeaders.innerHTML = `Headers: ${headersReq}`;
+            !bodyReq?pBody.innerHTML = `Body: null`:pBody.innerHTML = `Body: ${bodyReq}`;
+            */
+        }                  
+    function errorHandler(jqXHR,statusStr,errorStr) {
+        alert(statusStr+' '+errorStr);
+    }
+    }
+    else {
+        spanErr.innerHTML = `Cann't be empty!`;
+    }
 }); 
 let createInput = (name, nameClass) =>{
     name.classList.add(nameClass);
@@ -56,6 +73,17 @@ let createInput = (name, nameClass) =>{
     name.type = 'text';
     name.size = '50';    
 }
+$("#bodyButtonChange").on( "click", function( event ) {
+    if (divBody.className === 'body _active'){        
+        divBody.className = 'body _hiden';
+        headersBody.className = '_active';
+    }
+    else {
+        console.log('here')
+        divBody.className = 'body _active';
+        headersBody.className = '_hiden';
+    }
+});
 $("#paramsButton").on( "click", function( event ) {
     let paramsKey = document.createElement('input');
     let divNewParamsFields = document.createElement('div');
@@ -63,6 +91,9 @@ $("#paramsButton").on( "click", function( event ) {
     createInput(paramsKey, 'params');
     createInput(paramsValue, 'params');   
     divNewParamsFields.appendChild(paramsKey);
+    divNewParamsFields.appendChild(paramsValue);
+    divNewParamsFields.appendChild(paramsValue);
+    divNewParamsFields.appendChild(paramsValue);
     divNewParamsFields.appendChild(paramsValue);
     divParams.appendChild(divNewParamsFields);
 }); 

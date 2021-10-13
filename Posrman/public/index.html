@@ -2,40 +2,70 @@
 <html>
 <head>
     <title>NOT_Postman</title>
-    <meta charset="utf-8" />
+    <meta charset="utf-8" />  
+    
+    
 </head>
+<style>
+    div{
+        margin: 20px 0;
+    }
+    .body, input{
+        margin: 0 5px;
+    }
+    .submit{
+        margin: 0 300px;
+    }
+    ._hiden{
+        display: none;
+    } 
+    ._active{
+        display: inline-block;
+    }
+
+
+</style>
 <body> 
     <form id='form'>
         <label for="url">URL</label><br>
-        <input type="text" name="url" size="48"><br>
+        <input type="text" name="url" size="48"><span id='urlError'></span>
+        <p></p>
         <label for="get">GET</label>
         <input type="radio" id="get" name="method" value="get" checked>
         <label for="post">POST</label>
-        <input type="radio" id="post" name="method" value="post"><br>  
+        <input type="radio" id="post" name="method" value="post"> 
+
         <div id='params' name='params'>
-            <label>Params</label>
-                <div>                
-                    <input class='params' name='paramsKey' type='text' size='50'>
-                    <input class='params' name='paramsValue' type='text' size='50'>                    
-                </div>                
+            <label>Params</label> <br>       
+            <input class='params' name='paramsKey' type='text' size='50'>
+            <input class='params' name='paramsValue' type='text' size='50'>
+            <input type="button" name='paramsButton' id="paramsButton" value="+">                        
         </div>  
-        <input type="button" name='paramsButton' id="paramsButton" value="+"><br>           
+               
         <div id='headers' name='headers'>     
             <label >Headers</label><br>           
-            <input class='headers' name='headersKey' type='text' size='50'>
-            <input class='headers' name='headersValue' type='text' size='50'>                    
+            <input class='headers' name='headersKey' type='text'size='50'>
+            <input class='headers' name='headersValue' type='text' size='50'>  
+            <input type="button" name='headersButton' id="headersButton" value="+">                
         </div>  
-            <input type="button" name='headersButton' id="headersButton" value="+"><br>   
+           
         <!--<textarea id="headers" name="headers" rows="4" cols="50"></textarea><br>-->
-        <div id='body' name='body'>
-            <label>Body</label>
-                <div>                
-                    <input class='body' name='bodyKey' type='text' size='50'>
-                    <input class='body' name='bodyValue' type='text' size='50'>                    
-                </div>                
-        </div>  
-        <input type="button" name='bodyButton' id="bodyButton" value="+"><br>
-        <input id="submit" type="submit" value="Send Request">
+        <div >
+            <label>Body</label><br>
+                <div id='body' class='body _active' name='body'> 
+                    <input  name='bodyKey' type='text' size='50'>
+                    <input name='bodyValue' type='text' size='50'>
+                    <input type="button" name='bodyButton' id="bodyButton" class='body _active' value="+"><br>                                                                                             
+                </div>                                    
+                    <textarea id="headersBody" name="headersBody" rows="4" cols="100" class='_hiden'></textarea><br>
+                    <input type="button" name='bodyButtonChange' id="bodyButtonChange" value="FormData/Row" >                        
+                <div>
+                    <input id="submit" type="submit" class='submit' value="Send Request">           
+                </div>
+                                
+               
+        </div>
+        
     </form>
     <div id='storeData'>
         <p id='pUrl'></p>
