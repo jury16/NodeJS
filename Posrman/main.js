@@ -27,6 +27,7 @@ webserver.post('/request', (req, res) => {
     let status, headerContent, headersArr;
     res.setHeader("Access-Control-Allow-Origin","*");
     res.setHeader("Access-Control-Allow-Headers","Content-Type");
+    console.log('req.body: ', req.body);
     let urL = req.body.url;
     let method = req.body.method;
     let params = req.body.params;
