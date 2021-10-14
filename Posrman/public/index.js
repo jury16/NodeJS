@@ -14,26 +14,19 @@ $("form").on( "submit", function( event ) {
     event.preventDefault();
     let paramsReq = {};
     let headersReq = {};
-    let bodyReq = {};
-    let hashReq = {};    
+    let hashReq = [];    
     let inputsParams = document.querySelectorAll('.params'); 
     let inputsHeaders = document.querySelectorAll('.headers'); 
     let inputsBody = document.querySelectorAll('.body');     
     let methodReq;
     let urlReq = event.target.url.value;
+    let bodyReq = event.target.body.value;
     let getReq = event.target.get.checked;
     getReq?methodReq = 'GET': methodReq = 'POST';
     hashReq = {'url': urlReq, 'method':methodReq, 'params':paramsReq, 'headers':headersReq, 'body': bodyReq};
+    console.log(bodyReq)
     getData (headersReq, inputsHeaders);
     getData (paramsReq, inputsParams);
-
-    if (divBody.className === 'body _active'){
-        getData (bodyReq, inputsBody);
-    }
-    else {
-        bodyReq = inputsBody[0].value;
-    }
-
     function getData(nameField, nameReq) {
         for(let i = 0; i < nameReq.length / 2; i++){
             nameField[nameReq[2*i].value] = nameReq[2*i+1].value;
@@ -42,7 +35,8 @@ $("form").on( "submit", function( event ) {
     if(urlReq){
         $.ajax(('/request'),{ 
             type:'POST', 
-            dataType:"json", 
+            'Content-type': 'application/json',
+            //dataType: "json",
             data: (hashReq),
             success: dataLoaded(), 
             //error:errorHandler
@@ -52,7 +46,6 @@ $("form").on( "submit", function( event ) {
             pUrl.innerHTML = `URL:  ${urlReq}`;
             spanErr.innerHTML = ``;
             pMethod.innerHTML = `Method: ${methodReq}`;
-            //console.log(this)
             /*
             !paramsReq?pParams.innerHTML = `Params: null`:pParams.innerHTML = `Params: ${paramsReq}`;
             !headersReq?pHeaders.innerHTML = `Headers: null`:pHeaders.innerHTML = `Headers: ${headersReq}`;
@@ -107,15 +100,6 @@ $("#headersButton").on( "click", function( event ) {
     divNewHeaderFields.appendChild(headersValue);
     divHeaders.appendChild(divNewHeaderFields);
 });
-$("#bodyButton").on( "click", function( event ) {
-    let bodyKey = document.createElement('input');
-    let divNewBodyFields = document.createElement('div');
-    let bodyValue = document.createElement('input');
-    createInput(bodyKey, 'body');
-    createInput(bodyValue, 'body');   
-    divNewBodyFields.appendChild(bodyKey);
-    divNewBodyFields.appendChild(bodyValue);
-    divBody.appendChild(divNewBodyFields);
-}); 
+
 }
 bodyQuise()
