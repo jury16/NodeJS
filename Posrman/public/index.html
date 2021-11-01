@@ -22,19 +22,23 @@
     ._active{
         display: inline-block;
     }
-
+    .bodyType input{
+        margin-right: 25px;
+    }
 
 </style>
 <body> 
     <form id='form'>
-        <label for="url">URL</label><br>
-        <input type="text" name="url" size="48"><span id='urlError'></span>
-        <p></p>
-        <label for="get">GET</label>
-        <input type="radio" id="get" name="method" value="get" checked>
-        <label for="post">POST</label>
-        <input type="radio" id="post" name="method" value="post"> 
-
+        <div>
+            <label for="url">URL</label><br>
+            <input type="text" name="url" size="48"><span id='urlError'></span>
+        </div>
+        <div>
+            <label for="get">GET</label>
+            <input type="radio" id="get" name="method" value="get" checked>
+            <label for="post">POST</label>
+            <input type="radio" id="post" name="method" value="post"> 
+        </div>     
         <div id='params' name='params'>
             <label>Params</label> <br>       
             <input class='params' name='paramsKey' type='text' size='50'>
@@ -47,27 +51,42 @@
             <input class='headers' name='headersKey' type='text'size='50'>
             <input class='headers' name='headersValue' type='text' size='50'>  
             <input type="button" name='headersButton' id="headersButton" value="+">                
-        </div>  
-           
-        <!--<textarea id="headers" name="headers" rows="4" cols="50"></textarea><br>-->
+        </div>      
         <div >
-            <label>Body</label><br>
-                <div id='body' class='body _active'>                                                                                                                                              
-                    <textarea id="divBody"  name='body' rows="4" cols="100"></textarea><br>
-                </div>                       
-                <div>
-                    <input id="submit" type="submit" class='submit' value="Send Request">           
-                </div>
-                                
-               
+            <label>Body</label>
+            <div id='bodyInputs' name='bodyInputs' class='bodyType'>
+                <label>none</label>
+                <input type="radio" id="none" name="bodyType" checked>
+                <label>form-data</label>
+                <input type="radio" id="form-data" name="bodyType"> 
+                <label>x-www-form-urlencoded</label>
+                <input type="radio" id="x-www-form-urlencoded" name="bodyType"> 
+                <label>TEXT</label>
+                <input type="radio" id="text" name="bodyType">   
+                <label>JSON</label>
+                <input type="radio" id="JSON" name="bodyType" >  
+                <label>HTML</label>
+                <input type="radio" id="HTML" name="bodyType">  
+                <label>XML</label>
+                <input type="radio" id="XML" name="bodyType">              
+            </div> 
+            <div id='body' class='body _hiden'>                                                                                                                                              
+                <textarea id="divBody"  name='body' rows="4" cols="100"></textarea><br>
+            </div>                       
+                         
         </div>
+        <div>
+            <input id="submit" type="submit" class='submit' value="Send Request">           
+        </div> 
         
     </form>
     <div id='storeData'>
+        <h2 id='title'></h2>
         <p id='pUrl'></p>
         <p id='pMethod'></p>
         <p id='pParams'></p>
         <p id='pHeaders'></p>
+        <p id='pBodyType'></p>
         <p id='pBody'></p>
     </div>
 
