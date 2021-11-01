@@ -1,0 +1,19 @@
+{
+  "name": "postman",
+  "version": "1.0.0",
+  "description": "Make a simplified analogue of \"Postman\".<br> 1. Ability to add query configurations:<br> - Request URL (without GET parameters);<br> - method;<br> - parameters (multiple key-value pairs);<br> - the format of the request body (Content-Type);<br> - body of the request;<br> - other request headers.<br> 2. Ability to run queries; show:<br> - http response code;<br> - response body format (Content-Type);<br> - response body;<br> - response headers;<br> - if possible - a preview of the response body.<br> It should be possible to send a request and show a response bypassing CORS policy.<br> Validate all request data.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cross-fetch": "^3.1.4",
+    "express": "^4.17.1",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^3.0.3"
+  }
+}
