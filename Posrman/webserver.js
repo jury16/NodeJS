@@ -18,17 +18,12 @@ webserver.post('/request', (req, res) => {
     let params = req.body.params;
     let headerS = req.body.headers;
     let bodyParams = req.body.bodyType;
-    let body = req.body.body;  
+    let bodY = req.body.body;  
+    let dataResponse = {};
     headerS["Access-Control-Allow-Origin"]  = "*";
     headerS["Access-Control-Allow-Headers"] = "Content-Type";
-    console.log('headers reicive and added: ', headerS)
-    /*
-    console.log('method:', method);
-    console.log('params:', params);
-    console.log('headerS: ', headers);
-    console.log('bodyParams: ', bodyParams);
-    console.log('body:', body);
-    */
+    let url = urL + params;
+    console.log('urL added: ', url)
     switch(bodyParams){
         case 'none': 
             call('none');
@@ -57,34 +52,39 @@ webserver.post('/request', (req, res) => {
             if(type != 'none' && !headerS['Content-Type']){
                 headerS['Content-Type'] = type;
             }        
-            console.log(headerS)   
-            fetch(urL, {
-                method: method,
-                if  (params){
-                    params: params},
+            fetch(url, {
+                method: method,                
                 if  (headerS){
                     headers: headerS},
-                if  (body){
-                    body: body},    
+                if  (bodY){
+                    body: bodY},    
     
             })
             .then(response => {
-                console.log('headers to send: ', headerS)
-                console.log('body to send: ', body);
-                console.log('response.status: ', response.status);
-                console.log('response.headers: ', response.headers.get('Content-Type'));
-                /*
+                dataResponse = {};
+                dataResponse['url'] = urL;
+                dataResponse['status'] = response.status;
+                dataResponse['Content-Type'] = response.headers.get('Content-Type');
+                let resHeaders = [];
                 for (let [key, value] of response.headers) {
-                    console.log(`${key} = ${value}`);
+                    let obj = {};
+                    obj[key] = value;
+                    resHeaders.push(obj);
                   } 
-                  */
-                return response.json();  
+                dataResponse['Headers'] = resHeaders;
+                return response.text();
+                           
             })
-            .then(data => console.log('data: ', data))
-            .catch(error => console.log('error: ', error))
+            .then(data => {               
+                dataResponse['data'] = data;
+                res.send(dataResponse).end();
+            })
+            .catch(error => {
+                console.log('error: ', error);
+                res.status(404).end();
+            })
                      
         }
-
 }); 
 webserver.options('/request', (req, res) => { 
     res.setHeader("Access-Control-Allow-Origin","*"); 
