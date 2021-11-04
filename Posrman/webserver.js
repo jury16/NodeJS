@@ -24,7 +24,7 @@ webserver.post('/request', (req, res) => {
     headerS["Access-Control-Allow-Origin"]  = "*";
     headerS["Access-Control-Allow-Headers"] = "Content-Type";
     let url = urL + params;
-    
+    bodY = JSON.stringify(bodY);
     switch(bodyParams){
         case 'none': 
             call('none');
@@ -41,7 +41,7 @@ webserver.post('/request', (req, res) => {
             break;
         case 'JSON': 
             console.log('yes')
-            bodY = JSON.stringify(bodY);
+            bodY = (bodY);
             call('application/json; charset=utf-8');
             break;
         case 'HTML': 
