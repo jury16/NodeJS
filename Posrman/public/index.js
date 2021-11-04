@@ -102,7 +102,7 @@ async function bodyQuise(){
         else {
             spanErr.innerHTML = `Cann't be empty!`;
         }
-        
+        console.log('data to transfer: ', hashReq);
     }); 
 
     //Requests store
@@ -133,6 +133,7 @@ async function bodyQuise(){
             wrapper.setAttribute('class', '_infoHide')
         }
         data?resPreview.innerHTML = `${(data['data'])}`:resPreview.innerHTML = '';
+        
     }
     //show Request list
     function showList(){
