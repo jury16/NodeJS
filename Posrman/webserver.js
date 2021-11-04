@@ -1,7 +1,6 @@
-//const { KeyObject } = require('crypto');
-//const { response } = require('express');
 const express = require('express');
 const webserver = express();
+
 //const fs = require("fs");
 const fetch = require('node-fetch');
 const path = require('path');
@@ -10,7 +9,7 @@ webserver.use(express.urlencoded({extended:true}));
 webserver.use(express.static(path.resolve(__dirname, 'public')));
 
 webserver.post('/request', (req, res) => { 
-    let status, headerContent, headersArr;
+    //console.log('req.body: ', req.body)
     res.setHeader("Access-Control-Allow-Origin","*");
     res.setHeader("Access-Control-Allow-Headers","Content-Type");
     let urL = req.body.url;
@@ -23,7 +22,7 @@ webserver.post('/request', (req, res) => {
     headerS["Access-Control-Allow-Origin"]  = "*";
     headerS["Access-Control-Allow-Headers"] = "Content-Type";
     let url = urL + params;
-    console.log('urL added: ', url)
+    
     switch(bodyParams){
         case 'none': 
             call('none');
@@ -32,12 +31,14 @@ webserver.post('/request', (req, res) => {
             call('multipart/form-data;');
             break;
         case 'TEXT ': 
+            bodY = bodY;
             call('text/plain');
             break;
         case 'x-www-form-urlencoded': 
             call('application/x-www-form-urlencoded');
             break;
         case 'JSON': 
+            bodY = JSON.stringify(bodY);
             call('application/json; charset=utf-8');
             break;
         case 'HTML': 
@@ -48,11 +49,11 @@ webserver.post('/request', (req, res) => {
             break;
 
     }
-        function call(type){ 
+        async function call(type){            
             if(type != 'none' && !headerS['Content-Type']){
                 headerS['Content-Type'] = type;
             }        
-            fetch(url, {
+            const response = await fetch(url, {
                 method: method,                
                 if  (headerS){
                     headers: headerS},
@@ -60,30 +61,22 @@ webserver.post('/request', (req, res) => {
                     body: bodY},    
     
             })
-            .then(response => {
-                dataResponse = {};
-                dataResponse['url'] = urL;
-                dataResponse['status'] = response.status;
-                dataResponse['Content-Type'] = response.headers.get('Content-Type');
-                let resHeaders = [];
-                for (let [key, value] of response.headers) {
-                    let obj = {};
-                    obj[key] = value;
-                    resHeaders.push(obj);
-                  } 
-                dataResponse['Headers'] = resHeaders;
-                return response.text();
-                           
-            })
-            .then(data => {               
-                dataResponse['data'] = data;
-                res.send(dataResponse).end();
-            })
-            .catch(error => {
-                console.log('error: ', error);
-                res.status(404).end();
-            })
-                     
+            //console.log('from response: ', response.url)
+            dataResponse = {};
+            dataResponse['url'] = urL;
+            dataResponse['status'] = response.status;
+            dataResponse['Content-Type'] = response.headers.get('Content-Type');
+            let resHeaders = [];
+            for (let [key, value] of response.headers) {
+                let obj = {};
+                obj[key] = value;
+                resHeaders.push(obj);
+                } 
+            dataResponse['Headers'] = resHeaders;
+            const data = await response.text();                       
+            dataResponse['data'] = data;
+            res.send(dataResponse).end();
+            //await Promise.reject(res.send(404).end());         
         }
 }); 
 webserver.options('/request', (req, res) => { 
