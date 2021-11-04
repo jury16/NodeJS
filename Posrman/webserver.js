@@ -1,3 +1,5 @@
+//const { KeyObject } = require('crypto');
+//const { response } = require('express');
 const express = require('express');
 const webserver = express();
 
@@ -9,7 +11,7 @@ webserver.use(express.urlencoded({extended:true}));
 webserver.use(express.static(path.resolve(__dirname, 'public')));
 
 webserver.post('/request', (req, res) => { 
-    //console.log('req.body: ', req.body)
+    console.log('req.body: ', req.body)
     res.setHeader("Access-Control-Allow-Origin","*");
     res.setHeader("Access-Control-Allow-Headers","Content-Type");
     let urL = req.body.url;
@@ -38,6 +40,7 @@ webserver.post('/request', (req, res) => {
             call('application/x-www-form-urlencoded');
             break;
         case 'JSON': 
+            console.log('yes')
             bodY = JSON.stringify(bodY);
             call('application/json; charset=utf-8');
             break;
@@ -49,7 +52,8 @@ webserver.post('/request', (req, res) => {
             break;
 
     }
-        async function call(type){            
+        async function call(type){    
+            console.log('bodY:', typeof(bodY))      
             if(type != 'none' && !headerS['Content-Type']){
                 headerS['Content-Type'] = type;
             }        
@@ -61,7 +65,7 @@ webserver.post('/request', (req, res) => {
                     body: bodY},    
     
             })
-            //console.log('from response: ', response.url)
+            console.log('from response: ', response.url)
             dataResponse = {};
             dataResponse['url'] = urL;
             dataResponse['status'] = response.status;
@@ -76,7 +80,7 @@ webserver.post('/request', (req, res) => {
             const data = await response.text();                       
             dataResponse['data'] = data;
             res.send(dataResponse).end();
-            //await Promise.reject(res.send(404).end());         
+                     
         }
 }); 
 webserver.options('/request', (req, res) => { 
