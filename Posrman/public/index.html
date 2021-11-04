@@ -7,11 +7,14 @@
     
 </head>
 <style>
+    li{
+        list-style-type : none;
+    }
     .wrapper{
         display: flex;
         justify-content: space-between;        
         width: 100%;
-        max-width: 1024px;
+        min-width: 1124px;
     }
     ._infoHide{
         display: flex;
@@ -29,11 +32,17 @@
     } 
     ._active{
         display: inline-block;
+        color: red;
     }
+    ._notActive{
+        color: black;
+    }
+
     .bodyType input{
         margin-right: 25px;
     }
-    .resHeaders, .resBody{
+    .resHeaders, 
+    .resBody{
         max-height: 250px;
         max-width: 600px;
         overflow-x: hidden;
@@ -46,18 +55,34 @@
         display: flex;
         justify-content: start;
     }
-    .showStore .buttons{
+    .storeData .buttons{
         justify-content: start;
     }
+    .storeData{
+        width: 30%
+    }
+    ._form{
+        flex-grow : 1;
+    }
+
 
 </style>
 <body> 
     <div class="wrapper" id='wrapper'>
-        <form id='form'>
+        <div class='storeData'>
+            <span> Requests list</span>
+            <ul class='store' id='store'>
+            </ul>
+            <div class='buttons'>
+                <input id="deleteItem" type="button"  value="Delete">
+                <input id="deleteAll" type="button" value="Delete all">           
+            </div>
+        </div>
+        <form id='form' class='storeData _form'>
             <h1>Postman</h1>
             <div>
-                <label for="url">URL</label><br>
-                <input type="text" id='url' name="url" size="70%"><span id='urlError'></span>
+                <p >URL</p>
+                <input type="text" id='url' name="url" size="40"><span id='urlError'></span>
             </div>
             <div>
                 <label for="get">GET</label>
@@ -66,17 +91,24 @@
                 <input type="radio" id="post" name="method" value="post"> 
             </div>     
             <div id='params' name='params'>
-                <label>Params</label> <br>       
-                <input class='params' name='paramsKey' type='text' size='auto'>
-                <input class='params' name='paramsValue' type='text' size='auto'>
-                <input type="button" name='paramsButton' id="paramsButton" value="+">                        
+                <label>Params</label> <br> 
+                <div>
+                    <input  class='params' name='paramsKey' type='text' size='10'>
+                    <input  class='params' name='paramsValue' type='text' size='10'>
+                    <input type="button" name='paramsButton' id="paramsButton" value="+"> 
+                </div>      
+                
+                                       
             </div>  
                    
             <div id='headers' name='headers'>     
-                <label >Headers</label><br>           
-                <input class='headers' name='headersKey' type='text'size='auto'>
-                <input class='headers' name='headersValue' type='text' size='auto'>  
-                <input type="button" name='headersButton' id="headersButton" value="+">                
+                <label >Headers</label><br> 
+                <div>
+                    <input class='headers' name='headersKey' type='text'size='10'>
+                    <input  class='headers' name='headersValue' type='text' size='10'>  
+                    <input type="button" name='headersButton' id="headersButton" value="+"> 
+                </div>          
+                              
             </div>      
             <div >
                 <label>Body</label>
@@ -113,23 +145,32 @@
             
         </form>
         <div id='storeData' class='storeData'>
-            <h2 id='title'></h2>
-            <p id='status'></p>
-            <p id='contentType'></p>
-            <p id='resBody' class='resBody'></p>
-            <div id='resHeaders' class='resHeaders'></div>
-            <p id='resPreview'></p>
-        </div>        
+            <h2 id='title'>Received data</h2>
+            <div>
+                <span>Status:</span>
+                <span id='status'></span>
+            </div>            
+            <div>
+                <span>Content-Type:</span>
+                <span id='contentType'></span>
+            </div>           
+            <div>
+                <p>Body:</p>
+                <textarea id='resBody' class='resBody' rows="4" cols="50%"></textarea>
+            </div>          
+            <div>
+                <span>Headers:</span>
+                <div id='resHeaders' class='resHeaders'></div>
+            </div>           
+            
+            
+        </div> 
+              
     </div>
-    <div class="showStore">
-        <span> Requests list</span>
-        <ul class='store' id='store'>
-        </ul>
-        <div class='buttons'>
-            <input id="deleteItem" type="button"  value="Delete">
-            <input id="deleteAll" type="button" value="Delete all">           
-        </div>
-    </div>
+    <div class='resBody'>
+        <span>Body preview:</span>
+        <p id='resPreview'></p>
+    </div> 
     
 
     <script src='http://fe.it-academy.by/JQ/jquery.js'></script>  

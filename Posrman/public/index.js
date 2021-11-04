@@ -53,6 +53,31 @@ async function bodyQuise(){
         let methodReq;
         let urlReq = event.target.url.value;
         let bodyReq = event.target.body.value;
+        /*
+        switch(bodyParam){
+            case 'none': 
+                bodyReq = 0;
+                break;
+            case 'form-data': 
+                call('multipart/form-data;');
+                break;
+            case 'TEXT ': 
+                bodyReq = bodyReq;
+                break;
+            case 'x-www-form-urlencoded': 
+                call('application/x-www-form-urlencoded');
+                break;
+            case 'JSON': 
+                bodyReq = JSON.stringify(bodyReq);
+                break;
+            case 'HTML': 
+                bodyReq = bodyReq;
+                break;
+            case 'XML': 
+                bodyReq = bodyReq;
+                break;    
+        }
+        */
         let getReq = event.target.get.checked;
         getReq?methodReq = 'GET': methodReq = 'POST';
         hashReq = {'url': urlReq, 'method':methodReq, 'params':paramsReq, 'headers':headersReq, bodyType: bodyParam , body: bodyReq};
@@ -90,15 +115,14 @@ async function bodyQuise(){
     //show request info
     function showInfo(data = null){
         title.innerHTML = 'Received data'
-        data?status.innerHTML = `Status:  ${data['status']}`: status.innerHTML = ``;
+        data?status.innerHTML = `${data['status']}`: status.innerHTML = ``;
         spanErr.innerHTML = ``;
         resHeaders.innerHTML = '';
-        data?contentType.innerHTML = `Content-Type: ${data['Content-Type']}`:contentType.innerHTML = ``;
-        data?resBody.innerHTML = `Body: ${JSON.stringify(data['data'])}`:resBody.innerHTML = ``;
-        resHeaders.innerHTML = 'Headers';
+        data?contentType.innerHTML = `${data['Content-Type']}`:contentType.innerHTML = ``;
+        data?resBody.innerHTML = `${(data['data'])}`:resBody.innerHTML = ``;        
         if (data){
             wrapper.setAttribute('class', 'wrapper')
-            console.log(data['Headers'])
+            //console.log(data['data'])
             data['Headers'].forEach(item =>{                
                 let ppp = document.createElement('p');
                 ppp.innerHTML = `${Object.keys(item)} : ${item[Object.keys(item)]}`;
@@ -108,8 +132,7 @@ async function bodyQuise(){
         else{
             wrapper.setAttribute('class', '_infoHide')
         }
-        
-        resPreview.innerHTML = `Body preview: `;
+        data?resPreview.innerHTML = `${(data['data'])}`:resPreview.innerHTML = '';
     }
     //show Request list
     function showList(){
@@ -118,21 +141,31 @@ async function bodyQuise(){
             let request = document.createElement('li');            
             request.innerHTML = item.url;
             request.id = item.id;
+            request.className = '_notActive';
             storeUl.appendChild(request);
         })
     }
     
     //add input fields
-    let createInput = (name, nameClass) =>{
-        name.classList.add(nameClass);
-        name.name = name;
+    let createInput = (name, nameVal, nameClass) =>{ 
+        name.classList.add(nameClass);       
+        name.name = nameVal;
         name.type = 'text';
-        name.size = '50';    
+        name.setAttribute('size', 10);    
     }  
 
     //listen buttons
     $("#store").on( "click", function( event ) {
-        idToDelete = event.target.id;
+        let liArr = document.getElementsByTagName('li');
+        for (let i = 0; i < liArr.length; i++){
+            if (liArr[i].id == event.target.id){
+                liArr[i].className = '_active';
+            }
+            else {
+                liArr[i].className = '_notActive';
+            }
+        }
+        idToDelete = event.target.id;             
         dataStore.forEach(item =>{
             if (item.id == idToDelete){
                 showInfo(item);
@@ -142,7 +175,7 @@ async function bodyQuise(){
         
     });
     $("#deleteItem").on( "click", function( event ) {
-        if (idToDelete){
+        if (idToDelete){            
            let arr = [];
            for (let i = 0; i < dataStore.length; i++){
                if (dataStore[i].id != idToDelete){
@@ -176,28 +209,22 @@ async function bodyQuise(){
     $("#paramsButton").on( "click", function( event ) {
         let paramsKey = document.createElement('input');
         let divNewParamsFields = document.createElement('div');
-        let paramsValue = document.createElement('input');
-        
-        createInput(paramsKey, 'params');
-        createInput(paramsValue, 'params');   
+        let paramsValue = document.createElement('input');        
+        createInput(paramsKey, 'paramsKey', 'params');
+        createInput(paramsValue, 'paramsValue', 'params');   
         divNewParamsFields.appendChild(paramsKey);
         divNewParamsFields.appendChild(paramsValue);
         divParams.appendChild(divNewParamsFields);
-        paramsKey.setAttribute('size', 'auto');
-        paramsValue.setAttribute('size', 'auto');
     }); 
     $("#headersButton").on( "click", function( event ) {
         let headersKey = document.createElement('input');
         let divNewHeaderFields = document.createElement('div');        
         let headersValue = document.createElement('input');
-        createInput(headersKey, 'headers');
-        createInput(headersValue, 'headers');   
+        createInput(headersKey, 'headersKey','headers');
+        createInput(headersValue, 'headersValue', 'headers');   
         divNewHeaderFields.appendChild(headersKey);
         divNewHeaderFields.appendChild(headersValue);
-        divHeaders.appendChild(divNewHeaderFields);
-        headersKey.setAttribute('size', 'auto');
-        headersValue.setAttribute('size', 'auto');
-        
+        divHeaders.appendChild(divNewHeaderFields);        
     });
     
     }
