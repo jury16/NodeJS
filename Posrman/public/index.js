@@ -47,41 +47,23 @@ async function bodyQuise(){
                 paramsReq = paramsReq + `${inputsParams[2*i].value}=${inputsParams[2*i+1].value}&`             
             }
             paramsReq = paramsReq.slice(0, -1);
-            paramsReq == "?="? paramsReq = null:paramsReq;
+            paramsReq.replace(/=|\?|\&/g,'') == ""? paramsReq = '':paramsReq;
         }
-        
+       // console.log('headersReq', headersReq);
         let methodReq;
+        //url validation 
         let urlReq = event.target.url.value;
-        let bodyReq = event.target.body.value;
-        /*
-        switch(bodyParam){
-            case 'none': 
-                bodyReq = 0;
-                break;
-            case 'form-data': 
-                call('multipart/form-data;');
-                break;
-            case 'TEXT ': 
-                bodyReq = bodyReq;
-                break;
-            case 'x-www-form-urlencoded': 
-                call('application/x-www-form-urlencoded');
-                break;
-            case 'JSON': 
-                bodyReq = JSON.stringify(bodyReq);
-                break;
-            case 'HTML': 
-                bodyReq = bodyReq;
-                break;
-            case 'XML': 
-                bodyReq = bodyReq;
-                break;    
+        event.target.url.value = escapeHTML(event.target.url.value)
+        if (urlReq == escapeHTML(urlReq)){            
+            (urlReq.substring(0, 7) == 'http://' || urlReq.substring(0, 8)) == 'https://'? urlReq : urlReq = 'http://' + urlReq;
         }
-        */
+        else{
+            spanErr.innerHTML = 'Not valid!';
+        }
+        let bodyReq = event.target.body.value;
         let getReq = event.target.get.checked;
         getReq?methodReq = 'GET': methodReq = 'POST';
-        hashReq = {'url': urlReq, 'method':methodReq, 'params':paramsReq, 'headers':headersReq, bodyType: bodyParam , body: bodyReq};
-                
+        hashReq = {'url': urlReq, 'method':methodReq, 'params':paramsReq, 'headers':headersReq, bodyType: bodyParam , body: bodyReq};       
         if(urlReq){
             $.ajax(('/request'),{ 
                 type:'POST', 
@@ -89,7 +71,7 @@ async function bodyQuise(){
                 "Access-Control-Allow-Origin" :"*",
                 data: (hashReq),
                 success: dataLoaded, 
-                //error:errorHandler
+                error:errorHandler
             });
             function dataLoaded(data){
                 store(data); 
@@ -102,7 +84,7 @@ async function bodyQuise(){
         else {
             spanErr.innerHTML = `Cann't be empty!`;
         }
-        console.log('data to transfer: ', hashReq);
+        //console.log('data to transfer: ', hashReq);
     }); 
 
     //Requests store
@@ -198,6 +180,7 @@ async function bodyQuise(){
         url.value = '';
         get.checked = true;
         none.checked = true;
+        bodyData = '';
         divBody.className = 'body _hiden';
         clearInputs(document.getElementsByClassName('params'));
         clearInputs(document.getElementsByClassName('headers'));
@@ -227,6 +210,19 @@ async function bodyQuise(){
         divNewHeaderFields.appendChild(headersValue);
         divHeaders.appendChild(divNewHeaderFields);        
     });
+    
+    }
+    escapeHTML = (text) =>{
+        if(!text){
+            return text;
+        }
+        text = text.toString()
+            .split('&').join('&amp;')
+            .split('<').join('&lt;')
+            .split('>').join('&gt;')
+            .split('"').join('&quot;')
+            .split("'").join('&#039t;');
+        return text;
     
     }
     bodyQuise()
