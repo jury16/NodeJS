@@ -17,7 +17,7 @@ webserver.use(express.static(path.resolve(__dirname, 'public')));
 webserver.use(helmet());
 
 webserver.get('/', (req, res) =>{
-    res.setHeader("Content-Security-Policy","default-src 'self'");
+    //res.setHeader("Content-Security-Policy","default-src 'self'");
     //console.log('yes');
     res.render('main', {layout: 'index'});
 })
