@@ -1,0 +1,57 @@
+li{
+    list-style-type : none;
+}
+.wrapper{
+    display: flex;
+    justify-content: space-between;        
+    width: 100%;
+    min-width: 1124px;
+}
+._infoHide{
+    display: flex;
+    width: 100%;
+}
+div{
+    margin: 20px 0;
+}
+.body, input{
+    margin: 0 5px;
+
+}
+._hiden{
+    display: none;
+} 
+._active{
+    display: inline-block;
+    color: red;
+}
+._notActive{
+    color: black;
+}
+
+.bodyType input{
+    margin-right: 25px;
+}
+.resHeaders, 
+.resBody{
+    max-height: 250px;
+    max-width: 600px;
+    overflow-x: hidden;
+}
+.resHeaders p{
+    margin: 0;
+    padding: 0;
+}
+.buttons{
+    display: flex;
+    justify-content: start;
+}
+.storeData .buttons{
+    justify-content: start;
+}
+.storeData{
+    width: 30%
+}
+._form{
+    flex-grow : 1;
+}

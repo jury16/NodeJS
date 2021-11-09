@@ -1,0 +1,22 @@
+{
+  "name": "postman",
+  "version": "1.0.0",
+  "description": "Postman_2",
+  "main": "webserver.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cross-fetch": "^3.1.4",
+    "express": "^4.17.1",
+    "express-handlebars": "^5.3.4",
+    "hbs": "^4.1.2",
+    "helmet": "^4.6.0",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^3.0.3"
+  }
+}
